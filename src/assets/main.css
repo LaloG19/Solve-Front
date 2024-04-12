@@ -1,0 +1,22 @@
+body{
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+html{
+  margin: 0rem;
+  padding: 0rem;
+}
+.contenedorApp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f3f3f3;
+  width: 100%;
+}
+#app {
+  text-align: center;
+  margin: 0rem;
+  padding: 0rem;
+}
