@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import LayoutView from '@/views/LayoutView.vue';
 
-const title = ref('Dashboard View');
+const title = ref('Employees View');
 const user = ref('User 123');
 
 </script>
@@ -20,8 +20,8 @@ const user = ref('User 123');
 
     <template #mainContent>
       <div>
-        <h3>Dashboard View</h3>
-        <p>This is the dashboard view</p>
+        <h3>Employees View</h3>
+        <p>This is the employees view</p>
       </div>
     </template>
 

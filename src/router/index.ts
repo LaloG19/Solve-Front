@@ -1,30 +1,40 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
-import LoginView from '@/views/LoginView.vue'
 import DashboardView from '@/views/DashboardView.vue'
-import LayoutView from '@/shared/LayoutView.vue'
+import LayoutView from '@/views/LayoutView.vue'
+
+import LoginView from '@/modules/login/views/LoginView.vue'
 
 const routes: Array<RouteRecordRaw> = [
-  {
-    path: '/',
+  { /* Login, ruta principal, sección de rutas sin layout */
+    path: '/login',
     name: 'login',
     component: LoginView
-  },{
-    path: '/dashboard',
-    name: 'dashboard',
-    component: DashboardView
   },
-  {
+  { /* rutas con layout, ruta principal: dashboard */
+    path: '/',
+    name: 'main',
+    redirect: { name: 'dashboard' },
+    children:[
+      {
+        path:'dashboard/',
+        name: 'dashboard',
+        component: DashboardView,
+      },
+      { /* Ruta 404, en caso de no encontar /main/algo regresa al dashboard */
+        path: '/:catchAll(.*)',
+        redirect: { name: 'dashboard' }
+      }
+    ]
+  },
+  {       /* Ruta de prueba, eliminar cuando el layout sea establecido */
     path: '/layout',
     name: 'layout',
     component: LayoutView
   },
-  
-  
-  
-  {
+  { /* Ruta 404, en caso de no encontrar la ruta solicitada, regresa al login */
     path: '/:catchAll(.*)',
-    redirect: '/'
+    redirect: { name: 'login' }
   }
 ]
 
