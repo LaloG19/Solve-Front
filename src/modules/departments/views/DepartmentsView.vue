@@ -135,6 +135,7 @@ const cleanFrm = () => {
                     <input type="text" placeholder="department ID" class="inpKey" v-model="record.departmentID" :disabled="mode == 1" v-if="mode == 1">
                     <input type="text" placeholder="Name" class="inpName" v-model="record.name">
                     <input type="text" placeholder="Description" class="inpDescription" v-model="record.description">
+                    <input type="number" placeholder="Empleados" class="inpDescription" v-model="record.numberOfEmployees">
                     <button class="btAdd" @click="mode == 0 ? addNewDepartment() : updateDepartment()"> {{ mode == 0 ? 'Agregar' : 'Actualizar' }} </button>
                 </div>
             </transition-group>
@@ -160,10 +161,10 @@ const cleanFrm = () => {
                 <td class="col-s">{{ department.numberOfEmployees }}</td>
                 <td class="col-xs actions">
                   <div class="btTable">
-                    <!-- <img class="imgTable" src="@/assets/icons/edit_gray.svg" alt="edit" @click="uploadData(department)"> -->
+                    <img class="imgTable" src="@/assets/icons/edit_gray.svg" alt="edit" @click="uploadData(department)"> 
                   </div>
                   <div class="btTable">
-                    <!-- <img class="imgTable" src="@/assets/icons/trash_gray.svg" alt="delete" @click="deleteRecord(department)"> -->
+                    <img class="imgTable" src="@/assets/icons/trash_gray.svg" alt="delete" @click="deleteRecord(department)"> 
                   </div>
                 </td>
               </tr>
