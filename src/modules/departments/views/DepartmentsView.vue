@@ -75,7 +75,7 @@ const user = ref('User 123');
   text-align: center;
   color: #354E5A;
   margin-top: 1rem;
-  font-size: 1.7rem;
+  font-size: 1.7git rem;
   font-weight: bold;
 }
 
@@ -90,7 +90,8 @@ const user = ref('User 123');
   margin-right: 1rem; 
   width: 32rem;
   border-radius: 0.5rem;
-  border: 1;
+  border-color: #37464E;
+  outline: none;
   display: block; 
   text-indent: 0.5rem; 
 }
@@ -98,6 +99,9 @@ const user = ref('User 123');
   transition: all 0.3s ease-in-out;
   width: 14.4rem; 
   height: 2rem; 
+  font-weight: 600;
+  letter-spacing: 0.5rem;
+  text-transform: uppercase;
   border-radius: 1rem; 
   background: #354E5A;
   outline: none;
@@ -106,6 +110,17 @@ const user = ref('User 123');
   font-size: 1rem; 
   color: white;
 }
+
+.btn-departments:hover {
+  background-color: #2c4250; 
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-departments:active {
+  transform: translateY(1px);
+}
+
 
 
 .search-container {
@@ -117,9 +132,9 @@ const user = ref('User 123');
 
 .search-label {
   margin-right: 1rem;
-  font-size: 1.2rem; /* Tamaño más grande */
-  font-weight: bold; /* Negrita */
-  color: #354E5A; /* Color de los títulos en la tabla */
+  font-size: 1.2rem;
+  font-weight: bold; 
+  color: #354E5A; 
 }
 
 .input-search-class{
@@ -127,7 +142,8 @@ const user = ref('User 123');
   margin-right: 1rem; 
   width: 20rem;
   border-radius: 0.5rem;
-  border: 1;
+  border-color: #37464E;
+  outline: none;
   display: block; 
   text-indent: 0.5rem; 
 }
