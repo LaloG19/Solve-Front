@@ -1,10 +1,114 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted} from 'vue';
 import LayoutView from '@/views/LayoutView.vue';
+import searcher from '../components/searcherDepartments.vue';
+import { useDepartment } from '../stores/department.js';
+import Swal from 'sweetalert2';
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-const title = ref('Departments View');
-const user = ref('User 123');
 
+const store = useDepartment();
+
+const title = ref('Departamentos');
+const credentials = ref( localStorage.getItem('credentials') ? JSON.parse(localStorage.getItem('credentials')) : null );
+const departmentsList = ref([]);
+const mode = ref(0);
+const showFrm = ref(false);
+const record = ref({ departmentID: '', name: '', description: '', numberOfEmployees:''});
+
+onMounted(() => {
+  loadDepartments();
+});
+
+const loadDepartments = () => {
+  store.loadDepartments().then((res) =>{
+    if(res){
+      departmentsList.value = store.getDepartmentsList;
+    }
+  });
+}
+
+const addNewDepartment = () => {
+  console.log('Agregando nuevo registro');
+  store.createDepartment(record.value).then((res) => {
+    if(res){
+      loadDepartments();
+    }
+    cleanFrm();
+  });
+}
+
+const updateDepartment = () =>{
+  console.log('Actualizando registro');
+  store.updateDepartment(record.value).then((res) => {
+    if(res){
+      loadDepartments();
+    }
+    cleanFrm();
+  });
+}
+
+const newRecord = () =>{
+  showFrm.value = !showFrm.value;
+  mode.value = 0;
+  cleanFrm();
+}
+
+const uploadData = (recordData) => {
+  record.value.departmentID = recordData.departmentID;
+  record.value.name = recordData.name;
+  record.value.description = recordData.description;
+  record.value.numberOfEmployees = recordData.numberOfEmployees;
+
+  mode.value = 1;
+  showFrm.value = true; 
+}
+
+const deleteRecord = (recordData) => {
+  console.log('Eliminando registro');
+  Swal.fire({
+    title: '¿Estás seguro?',
+    text: "No podrás revertir esto!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#307351',
+    cancelButtonColor: '#A22522',
+    confirmButtonText: 'Sí, borrarlo!'
+  }).then((result) =>{
+    if(result.isConfirmed){
+      store.deleteDepartment(recordData.departmentID).then((res) =>{
+        if(res){
+          loadDepartments();
+        }
+      });
+    }
+  });
+}
+
+const handlerSearch = (value) => {
+  if (value) {
+  if (store.getDepartmentsList.length > 0){
+    departmentsList.value = store.getDepartmentsList;
+  }else{
+    loadDepartments();
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'No se encontraron registros con ese criterio de búsqueda',
+    });
+  }
+  } else {
+    loadDepartments();
+  }
+
+  cleanFrm();
+}
+
+const cleanFrm = () => {
+  record.value = { departmentID: '', name: '', description: '', numberOfEmployees:''};
+  mode.value = 0;
+}
 </script>
 
 <template>
@@ -15,165 +119,131 @@ const user = ref('User 123');
     </template>
     
     <template #User>
-      {{ user }}
+      {{ credentials != null ? credentials.user : 'No hay usuario'}}
     </template>
 
     <template #mainContent>
-      <h1 class="page-title">Departments</h1>
-      
-      <div class="container">
-        <div class="container-placeholder">
-          <input placeholder="Nombre del departamento" class="input-departments-class" name="departmentName" type="text">
-          <input placeholder="Descripción" class="input-departments-class" name="description" type="text">
-          <button type="submit" class="btn-departments">Agregar</button>          
+      <div class="mainContainer"> 
+        <div class="line">
+            <div class="searcher">
+                <searcher
+                    @eBusqueda="handlerSearch"
+                />
+            </div>
+            <transition-group name="general">
+                <div class="form" v-if="showFrm">
+                    <input type="text" placeholder="department ID" class="inpKey" v-model="record.departmentID" :disabled="mode == 1" v-if="mode == 1">
+                    <input type="text" placeholder="Name" class="inpName" v-model="record.name">
+                    <input type="text" placeholder="Description" class="inpDescription" v-model="record.description">
+                    <button class="btAdd" @click="mode == 0 ? addNewDepartment() : updateDepartment()"> {{ mode == 0 ? 'Agregar' : 'Actualizar' }} </button>
+                </div>
+            </transition-group>
+            <button class="btAdd" @click="newRecord()"> {{ showFrm == true ? 'Cancelar' : 'Nuevo' }} </button>
         </div>
 
-        <div class="search-container">
-          <label for="search" class="search-label">Buscar:</label>
-          <input placeholder="Nombre" class="input-search-class" name="departmentName" type="text">
+        <div class="tableContainer">
+          <table>
+            <thead>
+                <tr>
+                  <th class="col-xs"> ID </th>
+                  <th class="col-s col-start"> Nombre </th>
+                  <th class="col-a col-start"> Descripción </th>
+                  <th class="col-s"> Departamento </th>
+                  <th class="col-xs"> Acciones </th>
+                </tr>
+            </thead>
+            <tbody>
+              <tr v-for="department in departmentsList" :key="department.departmentID">
+                <td class="col-xs">{{ department.departmentID }}</td>
+                <td class="col-s col-start">{{ department.name }}</td>
+                <td class="col-a col-start">{{ department.description }}</td>
+                <td class="col-s">{{ department.numberOfEmployees }}</td>
+                <td class="col-xs actions">
+                  <div class="btTable">
+                    <!-- <img class="imgTable" src="@/assets/icons/edit_gray.svg" alt="edit" @click="uploadData(department)"> -->
+                  </div>
+                  <div class="btTable">
+                    <!-- <img class="imgTable" src="@/assets/icons/trash_gray.svg" alt="delete" @click="deleteRecord(department)"> -->
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-
-        <table class="departments-table">
-          <thead>
-            <tr>
-              <th class="text-center">N°</th>
-              <th>Nombre</th>
-              <th>Descripción</th>
-              <th>Empleados</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="text-center">1</td>
-              <td>Departamento</td>
-              <td>Descripción</td>
-              <td>Empleados</td>
-              <td>
-                <button class="action-button">
-                  Edit
-                </button>
-
-                <button class="action-button">
-                  Delete
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </template>
+
     
   </LayoutView>
 </template>
 
 <style scoped>
 
-.container{
-  padding: 1rem;
-}
-
-.page-title {
-  text-align: center;
-  color: #354E5A;
-  margin-top: 1rem;
-  font-size: 1.7git rem;
-  font-weight: bold;
-}
-
-.container-placeholder {
-  display: flex; 
-  padding: 1rem 2.5rem 2.5rem 0;
-}
-.input-departments-class {
-  padding: 0.1rem;
-  margin-bottom: 0.9rem;
-  margin-right: 1rem; 
-  width: 32rem;
-  border-radius: 0.5rem;
-  border-color: #37464E;
-  outline: none;
-  display: block; 
-  text-indent: 0.5rem; 
-}
-.btn-departments {
-  transition: all 0.3s ease-in-out;
-  width: 14.4rem; 
-  height: 2rem; 
-  font-weight: 600;
-  letter-spacing: 0.5rem;
-  text-transform: uppercase;
-  border-radius: 1rem; 
-  background: #354E5A;
-  outline: none;
-  cursor: pointer;
-  border: none;
-  font-size: 1rem; 
-  color: white;
-}
-
-.btn-departments:hover {
-  background-color: #2c4250; 
-  transform: scale(1.05);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.btn-departments:active {
-  transform: translateY(1px);
-}
-
-.search-container {
+.mainContainer{
   display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
+  height: 100%;
+  width: 100%;
+  min-height: 100%;
+  min-width: 100%;
+}
+.frm{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 1rem;
+}
+input{
+  padding: 0.5rem;
+  border: 1px solid #37464E;
+  border-radius: 0.5rem;
+  outline: none;
+  padding-left: 1rem;
+  height: 2rem;
+}
+.inpKey{
+  width: 10rem;
+}
+.inpName{
+  width: 15rem;
+}
+.inpDescription{
+  width: 20rem;
+}
+.inpDepartment{
+  width: 10rem;
+  border: 1px solid #37464E;
+  border-radius: 0.5rem;
+  outline: none;
+  padding-left: 0.5rem;
+  height: 2rem;
+}
+.btAdd{
+  width: 10rem;
+  height: 2rem;
+}
+.btAdd:hover{
+  background-color: #263238;
+}
+.line{
   margin-bottom: 1rem;
 }
 
-.search-label {
-  margin-right: 1rem;
-  font-size: 1.2rem;
-  font-weight: bold; 
-  color: #354E5A; 
-}
 
-.input-search-class{
-  padding: 0.1rem;
-  margin-right: 1rem; 
-  width: 20rem;
-  border-radius: 0.5rem;
-  border-color: #37464E;
-  outline: none;
-  display: block; 
-  text-indent: 0.5rem; 
-}
-
-
-.departments-table {
+.tableContainer{
   width: 100%;
-  border-collapse: collapse;
-}
+  /* height: 45rem; */
+  flex-grow: 1;
+  overflow-y: scroll;
 
-.departments-table th,
-.departments-table td {
-  border-radius: 0.5rem;
-  padding: 8px;
-  text-align: center;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Edge */
 }
-
-.departments-table th {
-  background-color: #354E5A;
+th{
+  background-color: #37464E;
   color: white;
+  letter-spacing: 0.25rem;
 }
-
-.departments-table button {
-  margin-right: 5px;
-}
-
-.action-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  margin: 0;
-}
-
 </style>

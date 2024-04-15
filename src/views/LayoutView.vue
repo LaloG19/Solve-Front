@@ -127,9 +127,10 @@ const goTo = (id) => {
 }
 
 .sidebar-list {
+  margin-top: 50%;
   flex-grow: 1;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 }
 
@@ -224,8 +225,8 @@ ul{
   height: calc(100% - 7rem);
   background-color: #F0F3FD;
   border-radius: 1rem;
-  border: 1px solid #999;
   box-shadow: 0.125rem 0.125rem 1rem #000000;
+  padding: 1rem;
 }
 
 .navbar-User, .navbar-Title{
