@@ -21,15 +21,13 @@ const user = ref('User 123');
     <template #mainContent>
       <h1 class="page-title">Departments</h1>
       
-      <form @submit.prevent="">
+      <div class="container">
         <div class="container-placeholder">
           <input placeholder="Nombre del departamento" class="input-departments-class" name="departmentName" type="text">
           <input placeholder="Descripción" class="input-departments-class" name="description" type="text">
           <button type="submit" class="btn-departments">Agregar</button>          
         </div>
-      </form>
 
-      <div>
         <div class="search-container">
           <label for="search" class="search-label">Buscar:</label>
           <input placeholder="Nombre" class="input-search-class" name="departmentName" type="text">
@@ -71,6 +69,10 @@ const user = ref('User 123');
 
 <style scoped>
 
+.container{
+  padding: 1rem;
+}
+
 .page-title {
   text-align: center;
   color: #354E5A;
@@ -79,10 +81,9 @@ const user = ref('User 123');
   font-weight: bold;
 }
 
-
 .container-placeholder {
   display: flex; 
-  padding: 1rem 2.5rem 2.5rem 2.5rem;
+  padding: 1rem 2.5rem 2.5rem 0;
 }
 .input-departments-class {
   padding: 0.1rem;
@@ -121,13 +122,10 @@ const user = ref('User 123');
   transform: translateY(1px);
 }
 
-
-
 .search-container {
   display: flex;
   align-items: center;
   margin-bottom: 1rem;
-  margin-left: 2rem
 }
 
 .search-label {
