@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
 import DashboardView from '@/views/DashboardView.vue'
 import LayoutView from '@/views/LayoutView.vue'
+import DepartmentsView from '@/modules/departments/views/DepartmentsView.vue'
 
 import LoginView from '@/modules/login/views/LoginView.vue'
 
@@ -31,6 +32,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/layout',
     name: 'layout',
     component: LayoutView
+  },
+  {       /* Ruta de prueba, eliminar cuando el layout sea establecido */
+    path: '/departments',
+    name: 'departments',
+    component: DepartmentsView
   },
   { /* Ruta 404, en caso de no encontrar la ruta solicitada, regresa al login */
     path: '/:catchAll(.*)',

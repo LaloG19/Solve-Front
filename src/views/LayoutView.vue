@@ -9,7 +9,7 @@ const goTo = (id) => {
       router.push({ name: 'login' });
       break;
     case 1:
-      router.push({ name: 'dashboard' });
+      router.push({ name: 'departments' });
       break;
     case 2:
       router.push({ name: 'dashboard' });
