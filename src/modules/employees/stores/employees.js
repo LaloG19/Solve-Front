@@ -74,7 +74,7 @@ export const useEmployee = defineStore('employee',{
         },
         async deleteEmployee(employeeID){
             try{
-                const response = await axios.delete(`${ruta}v1/employees/delete`, {data: employeeID});
+                const response = await axios.delete(`${ruta}v1/employees/delete`, { data: {employeeID}});
                 if (response.status === 200) {
                     Swal.fire({
                         icon: 'success',
