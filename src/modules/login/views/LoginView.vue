@@ -116,6 +116,8 @@ input{
   color: #37464E;
   font-size: 1rem;
   font-weight: 500;
+  border: 1px solid #37464E;
+  outline: none;
 }
 button{
   padding: 0.5rem 1rem;

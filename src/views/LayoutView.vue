@@ -16,6 +16,8 @@ const goTo = (id) => {
           showDenyButton: true,
           confirmButtonText: "Si, hasta luego",
           denyButtonText: `No, aún no`,
+          confirmButtonColor: "#307351",
+          denyButtonColor: "#A22522",
         }).then((result) => {
           if (result.isConfirmed) {
             localStorage.removeItem('credentials');
@@ -58,37 +60,29 @@ const goTo = (id) => {
     <div class="sidebar-list">
       <ul>
         <li class="module" @click="goTo(1)">
-          <img class="moduleIcon" src="@/assets/Temporal-Icon.svg" alt="Trabajadores">
+          <img class="moduleIcon" src="@/assets/layoutIcons/employee.svg" alt="Trabajadores">
           <a class="moduleText" > Trabajadores </a>
         </li>
         <li class="module" @click="goTo(2)">
-          <img class="moduleIcon" src="@/assets/Temporal-Icon.svg" alt="Horarios">
+          <img class="moduleIcon" src="@/assets/layoutIcons/schedules.svg" alt="Horarios">
           <a class="moduleText" > Horarios </a>
         </li>
         <li class="module" @click="goTo(3)">
-          <img class="moduleIcon" src="@/assets/Temporal-Icon.svg" alt="Faltas">
+          <img class="moduleIcon" src="@/assets/layoutIcons/absence.svg" alt="Faltas">
           <a class="moduleText" > Faltas </a>
         </li>
         <li class="module" @click="goTo(4)">
-          <img class="moduleIcon" src="@/assets/Temporal-Icon.svg" alt="Áreas">
+          <img class="moduleIcon" src="@/assets/layoutIcons/department.svg" alt="Áreas">
           <a class="moduleText" > Áreas </a>
         </li>
         <li class="module" @click="goTo(5)">
-          <img class="moduleIcon" src="@/assets/Temporal-Icon.svg" alt="Puestos">
+          <img class="moduleIcon" src="@/assets/layoutIcons/position.svg" alt="Puestos">
           <a class="moduleText" > Puestos </a>
-        </li>
-        <li class="module" @click="goTo(6)">
-          <img class="moduleIcon" src="@/assets/Temporal-Icon.svg" alt="Login">
-          <a class="moduleText" > Login </a>
-        </li>
-        <li class="module" @click="goTo(7)">
-          <img class="moduleIcon" src="@/assets/Temporal-Icon.svg" alt="Dashboard">
-          <a class="moduleText" > Dashboard </a>
-        </li>
+        </li> 
       </ul>
     </div>    
     <div class="logout" @click="goTo(0)">
-      <img class="logoutIcon" src="@/assets/logout.svg" alt="logout" />
+      <img class="logoutIcon" src="@/assets/layoutIcons/logout.svg" alt="logout" />
       <span class="logoutText"> Logout </span>
     </div>
   </div>
@@ -142,9 +136,10 @@ const goTo = (id) => {
 }
 
 .sidebar-list {
+  margin-top: 50%;
   flex-grow: 1;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 }
 
@@ -239,8 +234,8 @@ ul{
   height: calc(100% - 7rem);
   background-color: #F0F3FD;
   border-radius: 1rem;
-  border: 1px solid #999;
   box-shadow: 0.125rem 0.125rem 1rem #000000;
+  padding: 1rem;
 }
 
 .navbar-User, .navbar-Title{

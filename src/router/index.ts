@@ -76,7 +76,8 @@ router.beforeEach((to, from, next) => {
         title: 'Error',
         text: 'No tienes permisos para acceder a esta sección',
         icon: 'error',
-        confirmButtonText: 'Aceptar'
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#A22522',
       });
       
       next({ name: 'login' });
