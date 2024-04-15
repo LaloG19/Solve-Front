@@ -1,30 +1,31 @@
 <script setup lang="ts">
-import { ref, onMounted} from 'vue';
-import LayoutView from '@/views/LayoutView.vue';
-const title = ref('Horarios');
-const credentials = ref( localStorage.getItem('credentials') ? JSON.parse(localStorage.getItem('credentials')) : null );
+import { ref, onMounted } from 'vue'
+import LayoutView from '@/views/LayoutView.vue'
+const title = ref('Horarios')
+const credentials = ref(
+  localStorage.getItem('credentials') ? JSON.parse(localStorage.getItem('credentials')) : null
+)
+import ScheduleListComponent from '../components/ScheduleListComponent.vue'
 </script>
 
 <template>
   <LayoutView>
-    
     <template #Title>
       {{ title }}
     </template>
-    
+
     <template #User>
-      {{ credentials != null ? credentials.user : 'No hay user'}}
+      {{ credentials != null ? credentials.user : 'No hay user' }}
     </template>
 
     <template #mainContent>
       <div>
         <h3>Schedules View</h3>
         <p>This is the schedules view</p>
+        <ScheduleListComponent />
       </div>
     </template>
-
   </LayoutView>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
