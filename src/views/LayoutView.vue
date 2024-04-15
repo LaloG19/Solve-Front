@@ -1,30 +1,45 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+import Swal from 'sweetalert2';
+import { useLogin } from '@/modules/login/stores/login.js';
+const store = useLogin();
 
 const router = useRouter();
 
 const goTo = (id) => {
   switch (id) {
     case 0:
-      router.push({ name: 'login' });
+          Swal.fire({
+          title: "Cerrar sesión",
+          text: "¿Realmente quieres cerrar sesión?",
+          icon: "question",
+          showDenyButton: true,
+          confirmButtonText: "Si, hasta luego",
+          denyButtonText: `No, aún no`,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            localStorage.removeItem('credentials');
+            router.push({ name: 'login' });
+          }
+        });
       break;
     case 1:
-      router.push({ name: 'dashboard' });
+      router.push({ name: 'employeesList' });
       break;
     case 2:
-      router.push({ name: 'dashboard' });
+      router.push({ name: 'schedulesList' });
       break;
     case 3:
-      router.push({ name: 'dashboard' });
+      router.push({ name: 'absencesList' });
       break;
     case 4:
-      router.push({ name: 'dashboard' });
+      router.push({ name: 'departmentsList' });
       break;
     case 5:
-      router.push({ name: 'dashboard' });
+      router.push({ name: 'positionsList' });
       break;
     case 6:
-      router.push({ name: 'dashboard' });
+      router.push({ name: 'login' });
       break;
     case 7:
       router.push({ name: 'dashboard' });

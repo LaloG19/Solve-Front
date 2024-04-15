@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import LayoutView from '@/views/LayoutView.vue';
+import { ref } from 'vue';
 
-const title = ref('Dashboard View');
-const user = ref('User 123');
-
+const title = ref('Dashboard');
+const credentials = ref( localStorage.getItem('credentials') ? JSON.parse(localStorage.getItem('credentials')) : null );
 </script>
 
 <template>
@@ -15,7 +14,7 @@ const user = ref('User 123');
     </template>
     
     <template #User>
-      {{ user }}
+      {{ credentials != null ? credentials.user : 'No hay user'}}
     </template>
 
     <template #mainContent>
