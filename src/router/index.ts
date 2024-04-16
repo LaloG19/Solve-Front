@@ -52,7 +52,7 @@ const routes: Array<RouteRecordRaw> = [
       },
       { /* Ruta 404, en caso de no encontar /main/algo regresa al dashboard */
         path: '/:catchAll(.*)',
-        redirect: { name: 'dashboard' }
+        redirect: { name: 'employees' }
       }
     ]
   },

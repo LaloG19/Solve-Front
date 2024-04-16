@@ -13,10 +13,10 @@
     Swal.fire({
       icon: 'info',
       title: 'Ya has iniciado sesión',
-      text: 'Serás redirigido al dashboard',
+      text: 'Serás redirigido',
       timer: 1000,
     });
-    router.push({ name: 'dashboard' });
+    router.push({ name: 'employees' });
   }
 
   const tryLogin = () => {

@@ -44,7 +44,7 @@ const goTo = (id) => {
       router.push({ name: 'login' });
       break;
     case 7:
-      router.push({ name: 'dashboard' });
+      router.push({ name: 'employees' });
       break;
     default:
       break;
