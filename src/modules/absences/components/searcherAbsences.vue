@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { usePosition } from '../stores/position.js';
-const store = usePosition();
+import { useAbsence } from '../stores/absence.js';
+const store = useAbsence();
 
 const emit = defineEmits('eBusqueda');
 const txtSearch = ref('');
 
 const search = () => {
     if (txtSearch.value.length > 0) {
-        store.searchPosition(txtSearch.value).then((res) => {
+        store.searchAbsence(txtSearch.value).then((res) => {
             if (res) {
                 emit('eBusqueda', txtSearch.value);
             }
@@ -27,7 +27,7 @@ const search = () => {
 
 <style scoped>
     input{
-        width: 15rem;
+        width: 11rem;
         height: 2rem;
         border-radius: 0.5rem;
         outline: none;
