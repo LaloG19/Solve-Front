@@ -70,7 +70,7 @@ const deleteRecord = (recordData) => {
     confirmButtonText: 'Sí, borrarlo!'
   }).then((result) => {
     if (result.isConfirmed) {
-      store.deletePosition(recordData.positionID).then((res) => {
+      store.deletePosition({positionID: recordData.positionID}).then((res) => {
         if (res){
           loadPositions();
         }
@@ -115,7 +115,7 @@ const validateFrm = computed (() => {
       return false;
     }
   }else{
-    if (record.value.positionID == '' || record.value.positionID.length < 1  || record.value.name == '' || record.value.name.length < 3 || record.value.description == '' || record.value.description.length < 3|| record.value.departmentID == '' || record.value.name.length < 1){
+    if (record.value.positionID == '' || record.value.positionID.length != 0  || record.value.name == '' || record.value.name.length < 3 || record.value.description == '' || record.value.description.length < 3|| record.value.departmentID == '' || record.value.name.length < 1){
       return false;
     }
   }
