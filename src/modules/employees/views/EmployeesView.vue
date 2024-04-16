@@ -297,9 +297,20 @@ input{
 }
 
 .formContainer {
-  margin-top: 1rem; 
-  max-height: calc(100vh - 200px); 
+  margin-top: 1rem;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto; /* Cambiado a 'auto' para mostrar la barra de desplazamiento solo cuando sea necesario */
 }
+
+.formContainer > .form {
+  display: flex;
+  flex-wrap: wrap; /* Para que los elementos se envuelvan cuando lleguen al borde */
+}
+
+.formContainer > .form > * {
+  margin-bottom: 0.5rem; /* Espacio entre elementos */
+}
+
 
 
 
