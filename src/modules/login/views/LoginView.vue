@@ -36,7 +36,7 @@
             timer: 1000,
           });
           credentials.value = res;
-          router.push({ name: 'dashboard' });
+          router.push({ name: 'employees' });
         }
       });
     }
