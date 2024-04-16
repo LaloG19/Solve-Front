@@ -1,30 +1,47 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+import Swal from 'sweetalert2';
+import { useLogin } from '@/modules/login/stores/login.js';
+const store = useLogin();
 
 const router = useRouter();
 
 const goTo = (id) => {
   switch (id) {
     case 0:
-      router.push({ name: 'login' });
+          Swal.fire({
+          title: "Cerrar sesión",
+          text: "¿Realmente quieres cerrar sesión?",
+          icon: "question",
+          showDenyButton: true,
+          confirmButtonText: "Si, hasta luego",
+          denyButtonText: `No, aún no`,
+          confirmButtonColor: "#307351",
+          denyButtonColor: "#A22522",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            localStorage.removeItem('credentials');
+            router.push({ name: 'login' });
+          }
+        });
       break;
     case 1:
-      router.push({ name: 'departments' });
+      router.push({ name: 'employeesList' });
       break;
     case 2:
-      router.push({ name: 'dashboard' });
+      router.push({ name: 'schedulesList' });
       break;
     case 3:
-      router.push({ name: 'dashboard' });
+      router.push({ name: 'absencesList' });
       break;
     case 4:
-      router.push({ name: 'dashboard' });
+      router.push({ name: 'departmentsList' });
       break;
     case 5:
-      router.push({ name: 'dashboard' });
+      router.push({ name: 'positionsList' });
       break;
     case 6:
-      router.push({ name: 'dashboard' });
+      router.push({ name: 'login' });
       break;
     case 7:
       router.push({ name: 'dashboard' });
@@ -43,37 +60,29 @@ const goTo = (id) => {
     <div class="sidebar-list">
       <ul>
         <li class="module" @click="goTo(1)">
-          <img class="moduleIcon" src="@/assets/Temporal-Icon.svg" alt="Trabajadores">
+          <img class="moduleIcon" src="@/assets/layoutIcons/employee.svg" alt="Trabajadores">
           <a class="moduleText" > Trabajadores </a>
         </li>
         <li class="module" @click="goTo(2)">
-          <img class="moduleIcon" src="@/assets/Temporal-Icon.svg" alt="Horarios">
+          <img class="moduleIcon" src="@/assets/layoutIcons/schedules.svg" alt="Horarios">
           <a class="moduleText" > Horarios </a>
         </li>
         <li class="module" @click="goTo(3)">
-          <img class="moduleIcon" src="@/assets/Temporal-Icon.svg" alt="Faltas">
+          <img class="moduleIcon" src="@/assets/layoutIcons/absence.svg" alt="Faltas">
           <a class="moduleText" > Faltas </a>
         </li>
         <li class="module" @click="goTo(4)">
-          <img class="moduleIcon" src="@/assets/Temporal-Icon.svg" alt="Áreas">
+          <img class="moduleIcon" src="@/assets/layoutIcons/department.svg" alt="Áreas">
           <a class="moduleText" > Áreas </a>
         </li>
         <li class="module" @click="goTo(5)">
-          <img class="moduleIcon" src="@/assets/Temporal-Icon.svg" alt="Puestos">
+          <img class="moduleIcon" src="@/assets/layoutIcons/position.svg" alt="Puestos">
           <a class="moduleText" > Puestos </a>
-        </li>
-        <li class="module" @click="goTo(6)">
-          <img class="moduleIcon" src="@/assets/Temporal-Icon.svg" alt="Login">
-          <a class="moduleText" > Login </a>
-        </li>
-        <li class="module" @click="goTo(7)">
-          <img class="moduleIcon" src="@/assets/Temporal-Icon.svg" alt="Dashboard">
-          <a class="moduleText" > Dashboard </a>
-        </li>
+        </li> 
       </ul>
     </div>    
     <div class="logout" @click="goTo(0)">
-      <img class="logoutIcon" src="@/assets/logout.svg" alt="logout" />
+      <img class="logoutIcon" src="@/assets/layoutIcons/logout.svg" alt="logout" />
       <span class="logoutText"> Logout </span>
     </div>
   </div>

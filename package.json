@@ -14,9 +14,12 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "axios": "^1.6.8",
+    "@types/dotenv": "^8.2.0",
+    "animate.css": "^4.1.1",
+    "axios": "^1.6.2",
     "bootstrap": "^5.3.3",
     "core-js": "^3.8.3",
+    "dotenv": "^16.4.5",
     "pinia": "^2.1.7",
     "sweetalert2": "^11.10.7",
     "vue": "^3.4.15",
