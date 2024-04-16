@@ -43,20 +43,22 @@ export default class ScheduleServices {
       body: JSON.stringify(scheduleData)
     })
     if (response.ok) {
-      return await response.json()
+      const newSchedule = await response.json()
+      return newSchedule
     } else {
       throw new Error('Error al crear el horario')
     }
   }
 
   async updateSchedule(scheduleData: ISchedule): Promise<ISchedule> {
-    const response = await fetch(`${API_URL}/${scheduleData.scheduleID}`, {
+    const response = await fetch(`${API_URL}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(scheduleData)
     })
+
     if (response.ok) {
       return await response.json()
     } else {
@@ -65,11 +67,22 @@ export default class ScheduleServices {
   }
 
   async deleteSchedule(scheduleID: number): Promise<void> {
-    const response = await fetch(`${API_URL}/${scheduleID}`, {
-      method: 'DELETE'
-    })
-    if (!response.ok) {
-      throw new Error('Error al eliminar el horario')
+    try {
+      const response = await fetch(API_URL, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ scheduleID })
+      })
+
+      if (!response.ok) {
+        const errorMessage = await response.text()
+        throw new Error(`Error al eliminar el horario: ${errorMessage}`)
+      }
+    } catch (error) {
+      console.error('Error al eliminar el horario: ', error)
+      throw error
     }
   }
 }

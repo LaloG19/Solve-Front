@@ -1,5 +1,5 @@
 export interface ISchedule {
-  scheduleID: number
+  scheduleID?: number
   entryTime: string
   exitTime: string
   monday: boolean
