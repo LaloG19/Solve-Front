@@ -43,7 +43,10 @@ const updateDepartment = () =>{
   console.log('Actualizando registro');
   store.updateDepartment(record.value).then((res) => {
     if(res){
+      console.log('Se esta cargando');
       loadDepartments();
+    }else{
+      console.log('No se esta cargando');
     }
     cleanFrm();
   });

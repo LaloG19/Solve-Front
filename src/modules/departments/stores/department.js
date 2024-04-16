@@ -55,7 +55,7 @@ export const useDepartment = defineStore('department', {
         async updateDepartment(department){
             try{
                 const response = await axios.patch(`${ruta}v1/departments/modify`, department);
-                if(response.message === 200){
+                if(response.status === 200){
                     Swal.fire({
                         icon: 'success',
                         title: 'Departamento actualizado',

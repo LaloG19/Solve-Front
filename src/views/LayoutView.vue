@@ -35,7 +35,7 @@ const goTo = (id) => {
       router.push({ name: 'absencesList' });
       break;
     case 4:
-      router.push({ name: 'departmentsList' });
+      router.push({ name: 'departments' });
       break;
     case 5:
       router.push({ name: 'positionsList' });
