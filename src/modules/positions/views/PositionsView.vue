@@ -111,15 +111,15 @@ const msgIncomplete = () => {
 
 const validateFrm = computed (() => {
   if (mode.value == 0){
-    if (record.value.name == '' || record.value.description == '' || record.value.departmentID == '' || record.value.name.length > 3 || record.value.description.length > 3 || record.value.departmentID.length > 0){
-      return true;
+    if (record.value.name == '' || record.value.description == '' || record.value.departmentID == '' || record.value.name.length > 3 || record.value.description.length < 3 || record.value.departmentID.length < 1){
+      return false;
     }
   }else{
-    if (record.value.positionID == '' || record.value.positionID.length > 0  || record.value.name == '' || record.value.name.length > 3 || record.value.description == '' || record.value.description.length > 3|| record.value.departmentID == '' || record.value.name.length > 0){
-      return true;
+    if (record.value.positionID == '' || record.value.positionID.length < 1  || record.value.name == '' || record.value.name.length < 3 || record.value.description == '' || record.value.description.length < 3|| record.value.departmentID == '' || record.value.name.length < 1){
+      return false;
     }
   }
-  return false;
+  return true;
 });
 
 </script>
