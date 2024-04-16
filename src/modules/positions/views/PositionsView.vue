@@ -3,14 +3,17 @@ import { ref, onMounted, computed} from 'vue';
 import LayoutView from '@/views/LayoutView.vue';
 import searcher from '../components/searcherPositions.vue';
 import { usePosition } from '../stores/position.js';
+import { useDepartment } from '../../departments/stores/department.js';
 import Swal from 'sweetalert2';
 
 
 const store = usePosition();
+const storeDepartments = useDepartment();
 
 const title = ref('Puestos');
 const credentials = ref( localStorage.getItem('credentials') ? JSON.parse(localStorage.getItem('credentials')) : null );
 const positionsList = ref([]);
+const departmentList = ref([]);
 const mode = ref(0);
 const showFrm = ref(false);
 const record = ref({ positionID: '', name: '', description: '', departmentID: '' });
@@ -23,6 +26,13 @@ const loadPositions = () => {
   store.loadPositions().then((res) => {
     if (res){
       positionsList.value = store.getPositionsList;
+    }
+  });
+  storeDepartments.loadDepartments().then((res) => {
+    if (res){
+      departmentList.value = storeDepartments.getDepartmentsList;
+      console.log( JSON.stringify(departmentList.value) );
+      
     }
   });
 }
@@ -150,9 +160,7 @@ const validateFrm = computed (() => {
                     <input type="text" placeholder="Description" class="inpDescription" v-model="record.description">
                     <span for="department"> Departamento: </span>
                     <select name="department" class="inpDepartment" v-model="record.departmentID">
-                      <option value="1"> TI </option>
-                      <option value="2"> Marketing </option>
-                      <option value="3"> Contabilidad </option>
+                      <option v-for="department in departmentList" value="department.departmentID"> {{ department.name }}</option>
                     </select>
                     <button class="btAdd" @click="validateFrm ? msgIncomplete() : (mode == 0 ? addNewPosition() : updatePosition())" > {{ mode == 0 ? 'Agregar' : 'Actualizar' }} </button>
                 </div>
