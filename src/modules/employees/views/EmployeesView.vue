@@ -296,23 +296,26 @@ input{
   width: 100%;
 }
 
+.searcher{
+  align-items: flex-end;
+  display: flex;
+  margin-left: 2rem;
+}
+
 .formContainer {
   margin-top: 1rem;
   max-height: calc(100vh - 200px);
-  overflow-y: auto; /* Cambiado a 'auto' para mostrar la barra de desplazamiento solo cuando sea necesario */
+  overflow-y: auto;
 }
 
 .formContainer > .form {
   display: flex;
-  flex-wrap: wrap; /* Para que los elementos se envuelvan cuando lleguen al borde */
+  flex-wrap: wrap;
 }
 
 .formContainer > .form > * {
-  margin-bottom: 0.5rem; /* Espacio entre elementos */
+  margin-bottom: 0.5rem; 
 }
-
-
-
 
 .tableContainer{
   width: 100%;
