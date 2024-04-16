@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted} from 'vue';
+import { ref, onMounted, computed} from 'vue';
 import LayoutView from '@/views/LayoutView.vue';
 import searcher from '../components/searcherDepartments.vue';
 import { useDepartment } from '../stores/department.js';
@@ -15,7 +15,7 @@ const credentials = ref( localStorage.getItem('credentials') ? JSON.parse(localS
 const departmentsList = ref([]);
 const mode = ref(0);
 const showFrm = ref(false);
-const record = ref({ departmentID: '', name: '', description: '', numberOfEmployees:''});
+const record = ref({ departmentID: '', name: '', description: '', numberOfEmployees:'0'});
 
 onMounted(() => {
   loadDepartments();
@@ -106,9 +106,31 @@ const handlerSearch = (value) => {
 }
 
 const cleanFrm = () => {
-  record.value = { departmentID: '', name: '', description: '', numberOfEmployees:''};
+  record.value = { departmentID: '', name: '', description: '', numberOfEmployees:'0'};
   mode.value = 0;
 }
+
+const validateFrm = computed (() => {
+  if (mode.value == 0){
+    if (record.value.name == '' || record.value.description == '' ||  record.value.name.length <= 1 || record.value.description.length <= 3){
+      return true;
+    }
+  }else{
+    if (record.value.departmentID == '' || record.value.departmentID.length <= 0  || record.value.name == '' || record.value.name.length <= 1 || record.value.description == '' || record.value.description.length <= 3){
+      return true;
+    }
+  }
+  return false;
+});
+
+const msgIncomplete = () => {
+  Swal.fire({
+    icon: 'error',
+    title: 'Oops...',
+    text: 'Faltan campos por llenar',
+  });
+}
+
 </script>
 
 <template>
@@ -135,8 +157,7 @@ const cleanFrm = () => {
                     <input type="text" placeholder="department ID" class="inpKey" v-model="record.departmentID" :disabled="mode == 1" v-if="mode == 1">
                     <input type="text" placeholder="Name" class="inpName" v-model="record.name">
                     <input type="text" placeholder="Description" class="inpDescription" v-model="record.description">
-                    <input type="number" placeholder="Empleados" class="inpDescription" v-model="record.numberOfEmployees">
-                    <button class="btAdd" @click="mode == 0 ? addNewDepartment() : updateDepartment()"> {{ mode == 0 ? 'Agregar' : 'Actualizar' }} </button>
+                    <button class="btAdd" @click="validateFrm ? msgIncomplete() : (mode == 0 ? addNewDepartment() : updateDepartment())" > {{ mode == 0 ? 'Agregar' : 'Actualizar' }} </button>
                 </div>
             </transition-group>
             <button class="btAdd" @click="newRecord()"> {{ showFrm == true ? 'Cancelar' : 'Nuevo' }} </button>
@@ -228,6 +249,13 @@ input{
 .btAdd:hover{
   background-color: #263238;
 }
+
+.btAdd:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+}
+
 .line{
   margin-bottom: 1rem;
 }

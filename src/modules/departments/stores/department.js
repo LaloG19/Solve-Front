@@ -74,7 +74,7 @@ export const useDepartment = defineStore('department', {
         },
         async deleteDepartment(departmentID){
             try{
-                const response = await axios.delete(`${ruta}v1/departments/delete`, {data: departmentID});
+                const response = await axios.delete(`${ruta}v1/departments/delete`, {data: {departmentID}});
                 if(response.status === 200){
                     Swal.fire({
                         icon: 'success',
