@@ -160,8 +160,8 @@
                 <input type="text" placeholder="Fecha (YYYY-MM-DD)" id="absenceDate" class="inpDescription" v-model="record.absenceDate" pattern="\d{4}-\d{2}-\d{2}" minlength="10" maxlength="10" min="1900-01-01">
                   <span for="justified"> Justificación: </span>
                   <select name="justified" class="inpjustified" v-model="record.justified">
-                      <option value="0"> Si </option>
-                      <option value="1"> No </option>
+                      <option value="0" selected>Si</option>
+                      <option value="1">No</option>
                   </select>
                   <button class="btAdd" @click="mode == 0 ? addNewAbsence() : updateAbsence()" onclick="return validateForm()"> {{ mode == 0 ? 'Agregar' : 'Actualizar' }} </button>
               </div>
@@ -179,7 +179,7 @@
                   <th class="col-s col-s"> Apellido </th>
                   <th class="col-xs"> Horario </th>
                   <th class="col-s"> Fecha </th>
-                  <th class="col-xs"> justificacion </th>
+                  <th class="col-xs"> Justificado </th>
                   <th class="col-xs"> Acciones </th>
                 </tr>
             </thead>
@@ -191,13 +191,10 @@
                 <td class="col-xs">{{ absence.Employee.lastName }}</td>
                 <td class="col-xs">{{ absence.scheduleID }}</td>
                 <td class="col-xs">{{ absence.absenceDate }}</td>
-                <td class="col-xs">{{ absence.justified === 0 ? 'SI' : 'NO' }}</td>
-                <td class="col-xs actions">
-                  <div class="btTable">
+                <td class="col-xs">{{ absence.justified !== 0 ? 'NO' : 'SI' }}</td>
+                <td class="col-auto actions">
+                  <div class="btTable" v-if="absence.justified === 0">
                     <img class="imgTable" src="@/assets/icons/trash_gray.svg" alt="delete" @click="deleteRecord(absence)">
-                  </div>
-                  <div class="btTable">
-                    <!--- -->
                   </div>
                 </td>
               </tr>
@@ -244,6 +241,12 @@ input{
 }
 .inpDescription{
   width: 15rem;
+}
+.inpjustified{
+  width: 8rem;
+  border-radius: 0.5rem;
+  outline: none;
+  height: 2rem;
 }
 .btAdd{
   width: 10rem;
