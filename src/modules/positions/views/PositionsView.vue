@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted} from 'vue';
+import { ref, onMounted, computed} from 'vue';
 import LayoutView from '@/views/LayoutView.vue';
 import searcher from '../components/searcherPositions.vue';
 import { usePosition } from '../stores/position.js';
@@ -96,11 +96,31 @@ const handlerSearch = (value) => {
 
   cleanFrm();
 }
-
 const cleanFrm = () => {
   record.value = { positionID: '', name: '', description: '', departmentID: '' };
   mode.value = 0;
 }
+
+const msgIncomplete = () => {
+  Swal.fire({
+    icon: 'error',
+    title: 'Oops...',
+    text: 'Faltan campos por llenar',
+  });
+}
+
+const validateFrm = computed (() => {
+  if (mode.value == 0){
+    if (record.value.name == '' || record.value.description == '' || record.value.departmentID == '' || record.value.name.length > 3 || record.value.description.length > 3 || record.value.departmentID.length > 1){
+      return true;
+    }
+  }else{
+    if (record.value.positionID == '' || record.value.positionID.length > 0  || record.value.name == '' || record.value.name.length > 3 || record.value.description == '' || record.value.description.length > 3|| record.value.departmentID == '' || record.value.name.length > 1){
+      return true;
+    }
+  }
+  return false;
+});
 
 </script>
 
@@ -134,7 +154,7 @@ const cleanFrm = () => {
                       <option value="2"> Marketing </option>
                       <option value="3"> Contabilidad </option>
                     </select>
-                    <button class="btAdd" @click="mode == 0 ? addNewPosition() : updatePosition()"> {{ mode == 0 ? 'Agregar' : 'Actualizar' }} </button>
+                    <button class="btAdd" @click="validateFrm ? msgIncomplete() : (mode == 0 ? addNewPosition() : updatePosition())" > {{ mode == 0 ? 'Agregar' : 'Actualizar' }} </button>
                 </div>
             </transition-group>
             <button class="btAdd" @click="newRecord()"> {{ showFrm == true ? 'Cancelar' : 'Nuevo' }} </button>
