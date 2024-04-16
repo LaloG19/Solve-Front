@@ -94,7 +94,7 @@ export const useAbsence = defineStore('absence',{
                     Swal.fire({
                         icon: 'success',
                         title: 'Estado de falta actualizado',
-                        text: response.data.message,
+                        text: "Se ha justificado la falta correctamente.",
                     });
                     return true;
                 }

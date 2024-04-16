@@ -55,7 +55,7 @@ const goTo = (id) => {
 <template>
   <div class="sidebar">
     <div class="sidebar-header">
-      <img class="logo" src="@/assets/logo.svg" alt="logo" @click="goTo(0)"/>
+      <img class="logo" src="@/assets/logo.svg" alt="logo" @click="goTo(7)"/>
     </div>
     <div class="sidebar-list">
       <ul>

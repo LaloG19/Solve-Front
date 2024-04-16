@@ -191,7 +191,7 @@
                 <td class="col-xs">{{ absence.Employee.lastName }}</td>
                 <td class="col-xs">{{ absence.scheduleID }}</td>
                 <td class="col-xs">{{ absence.absenceDate }}</td>
-                <td class="col-xs">{{ absence.justified !== 0 ? 'NO' : 'SI' }}</td>
+                <td class="col-xs">{{ absence.justified === 0 ? 'NO' : 'SI' }}</td>
                 <td class="col-auto actions">
                   <div class="btTable" v-if="absence.justified === 0">
                     <img class="imgTable" src="@/assets/icons/trash_gray.svg" alt="delete" @click="deleteRecord(absence)">
