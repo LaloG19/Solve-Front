@@ -3,110 +3,126 @@ import { defineStore } from 'pinia'
 import Swal from 'sweetalert2';
 const ruta = 'https://backup-production-9704.up.railway.app/api/';
 
-export const usePosition = defineStore('position',{
+export const useAbsence = defineStore('absence',{
     state:()=>({
-        positionsList: [],
+        absencesList: [],
     }),
     getters:{
-      getPositionsList(state){
-        return state.positionsList;
+      getAbsencesList(state){
+        return state.absencesList;
       },
     },
     actions:{
-        async loadPositions(){
+        async loadAbsences(){
         try{
-            const positions = await axios.get(`${ruta}v1/positions`);
+            const absences = await axios.get(`${ruta}v1/absence`);
 
-            if (positions.status === 200) {
-                this.positionsList = positions.data;
+            if (absences.status === 200) {
+                this.absencesList = absences.data;
                 return true;
             }
          }catch(error){
             Swal.fire({
                 icon: 'error',
-                title: 'Error al obtener las posiciones',
+                title: 'Error al obtener las faltas',
                 text: 'Verifique su conexión a internet e intente de nuevo. \n' 
                 + JSON.stringify(error),
             });
             console.log('error: ' + JSON.stringify(error.message));
          }
         },
-        async createPosition(position){
-            try{
-                delete position.positionID;
-                const response = await axios.post(`${ruta}v1/positions/create`, position);
-                if (response.status === 200) {
+        async createAbsence(absences) {
+            try {
+                const isDuplicate = this.absencesList.some(absence =>
+                    absence.employeeID === absences.employeeID &&
+                    absence.absenceDate === absences.absenceDate
+                );
+        
+                if (isDuplicate) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'No se puede crear la falta',
+                        text: 'Ya existe una falta registrada para este empleado en la misma fecha.',
+                    });
+                    return false;
+                }
+        
+                delete absences.absenceID;
+                const response = await axios.post(`${ruta}v1/absence/create`, absences);
+                if (response.status === 201) {
                     Swal.fire({
                         icon: 'success',
-                        title: 'Posición creada',
+                        title: 'Falta creada',
                         text: response.data.message,
                     });
+                    this.loadAbsences();
                     return true;
                 }
-            }catch(error){
+            } catch (error) {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error al crear la posición',
+                    title: 'Error al crear la falta',
                     text: 'Verifique su conexión a internet e intente de nuevo.',
                 });
                 console.log('error: ' + JSON.stringify(error.message));
             }
         },
-        async updatePosition(position){
-            try{
-                const response = await axios.patch(`${ruta}v1/positions/modify`, position);
+        async updateAbsence(recordData) {
+            try {
+                const response = await axios.put(`${ruta}v1/absence/update`, { recordData });
                 if (response.status === 200) {
                     Swal.fire({
                         icon: 'success',
-                        title: 'Posición actualizada',
+                        title: 'Estado de falta actualizado',
                         text: response.data.message,
                     });
                     return true;
                 }
-            }catch(error){
+            } catch (error) {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error al actualizar la posición',
-                    text: 'Verifique su conexión a internet e intente de nuevo.',
-                });
-                console.log('error: ' + JSON.stringify(error.message));
-            }
-        },
-        async deletePosition(positionID){
-            try{
-                const response = await axios.delete(`${ruta}v1/positions/delete`, {data: positionID});
-                if (response.status === 200) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Posición eliminada',
-                        text: response.data.message,
-                    });
-                    return true;
-                }
-            }catch(error){
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error al eliminar la posición',
+                    title: 'Error al actualizar la Falta',
                     text: 'Verifique su conexión a internet e intente de nuevo.'
                 });
                 console.log('error: ' + JSON.stringify(error.message));
             }
         },
-        async searchPosition(txt){
-            try{
-                const response = await axios.get(`${ruta}v1/positions/search/${txt}`);
+        async deleteAbsence(absenceID) {
+            try {
+                const response = await axios.delete(`${ruta}v1/absence/delete`, { data: { absenceID } });
                 if (response.status === 200) {
-                    this.positionsList = response.data;
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Estado de falta actualizado',
+                        text: response.data.message,
+                    });
+                    return true;
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al actualizar la Falta',
+                    text: 'Verifique su conexión a internet e intente de nuevo.'
+                });
+                console.log('error: ' + JSON.stringify(error.message));
+            }
+        },
+        
+        async searchAbsence(txt){
+            try{
+                const response = await axios.get(`${ruta}v1/absence/employee/${txt}`);
+                if (response.status === 200) {
+                    this.absencesList = response.data;
                     return true;
                 }
             }catch(error){
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error al buscar la posición',
+                    title: 'Error al buscar la falta',
                     text: 'Verifique su conexión a internet e intente de nuevo.'
                 });
                 console.log('error: ' + JSON.stringify(error.message));
             }
         }
-    }
+    },  
 });
