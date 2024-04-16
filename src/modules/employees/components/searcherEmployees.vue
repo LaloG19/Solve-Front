@@ -21,7 +21,7 @@ const search = () => {
 
 <template>
     <div>
-        <input type="text" placeholder="Buscar" name="searcher" @keyup.enter="search()" v-model="txtSearch">
+        <input type="text" placeholder="Buscar por nombre" name="searcher" @keyup.enter="search()" v-model="txtSearch">
     </div>
 </template>
 

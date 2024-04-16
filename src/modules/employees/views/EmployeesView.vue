@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted} from 'vue';
+import { ref, onMounted, computed} from 'vue';
 import LayoutView from '@/views/LayoutView.vue';
 import searcher from '../components/searcherEmployees.vue';
 import { useEmployee } from '../stores/employees.js';
@@ -107,6 +107,28 @@ const cleanFrm = () => {
   mode.value = 0;
 }
 
+const validateFrm = computed (() => {
+  if (mode.value == 0){
+    if (record.value.name == '' || record.value.lastName == '' ||  record.value.name.length <= 1 || record.value.lastName.length <= 3 || record.value.salary == '' || record.value.email == '' || record.value.phoneNumber == '' || record.value.address == ''){
+      return true;
+    }
+  }else{
+    if (record.value.employeeID == '' || record.value.employeeID.length <= 0  || record.value.name == '' || record.value.name.length <= 1 || record.value.lastName == '' || record.value.lastName.length <= 3 || record.value.salary == '' || record.value.email == '' || record.value.phoneNumber == '' || record.value.address == ''){
+      return true;
+    }
+  }
+  return false;
+});
+
+const msgIncomplete = () => {
+  Swal.fire({
+    icon: 'error',
+    title: 'Oops...',
+    text: 'Faltan campos por llenar',
+  });
+}
+
+
 </script>
 
 <template>
@@ -150,8 +172,10 @@ const cleanFrm = () => {
                       <option value="1"> 1 </option>
                       <option value="2"> 2 </option>
                       <option value="3"> 3 </option>
+                      <option value="4"> 4 </option>
+                      <option value="5"> 5 </option>
                     </select>
-                    <button class="btAdd" @click="mode == 0 ? addNewEmployee() : updateEmployee()"> {{ mode == 0 ? 'Agregar' : 'Actualizar' }} </button>
+                    <button class="btAdd" @click="validateFrm ? msgIncomplete() : (mode == 0 ? addNewEmployee() : updateEmployee())"> {{ mode == 0 ? 'Agregar' : 'Actualizar' }} </button>
                 </div>
             </transition-group>
             <button class="btAdd" @click="newRecord()"> {{ showFrm == true ? 'Cancelar' : 'Nuevo' }} </button>
@@ -253,6 +277,8 @@ input{
 .btAdd{
   width: 10rem;
   height: 2rem;
+  margin-left: 1rem;
+  margin-top: 0.5rem;
 }
 .btAdd:hover{
   background-color: #263238;
@@ -271,8 +297,8 @@ input{
 }
 
 .formContainer {
-  margin-top: 1rem; /* Espacio entre el buscador y el formulario */
-  max-height: calc(100vh - 200px); /* Ajusta según sea necesario */
+  margin-top: 1rem; 
+  max-height: calc(100vh - 200px); 
 }
 
 
@@ -283,8 +309,8 @@ input{
   flex-grow: 1;
   overflow-y: scroll;
 
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Edge */
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
 }
 th{
   background-color: #37464E;
