@@ -88,6 +88,15 @@ onMounted( () => {
   border-radius: 1rem;
   box-shadow: 0.5rem 0.5rem 2rem #37464E;
   width: 35%;
+  
+  @media (max-width: 768px) {
+    width: 75%;
+    padding: 1rem;
+  }
+  @media (max-width: 480px) {
+    width: 100%;
+    padding: 1rem;
+  }
 }
 h1{
   text-align: center;
